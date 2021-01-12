@@ -1256,6 +1256,13 @@ testSelectWhere run = describe "select where_" $ do
           ret `shouldBe` p
           pPk `shouldBe` thePk
 
+    it "adds parens where necessary" $ run $ do
+        [Value x] <- select $ do
+          where_ (subSelectUnsafe (pure (val True)))
+          pure (val 42)
+        liftIO $
+          x `shouldBe` (42 :: Int)
+
 testSelectOrderBy :: Run -> Spec
 testSelectOrderBy run = describe "select/orderBy" $ do
     it "works with a single ASC field" $ run $ do
