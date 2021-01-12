@@ -2943,7 +2943,7 @@ makeWhere info (Where v) = first ("\nWHERE " <>) $ x info
   where
     x =
         case v of
-            ERaw _ f             -> f
+            ERaw p f             -> first (parensM p) . f
             EAliasedValue i _    -> aliasedValueIdentToRawSql i
             EValueReference i i' -> valueReferenceToRawSql i i'
             ECompositeKey _      -> throw (CompositeKeyErr MakeWhereError)
